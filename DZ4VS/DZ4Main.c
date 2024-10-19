@@ -1,29 +1,23 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <conio.h>
 //
 int valueIntGlobal[] = {651, 22, 57};
 float valueFloatGlobal[] = {2.78, 518., 43.15432};
-
-int valueIntLine[] = {23, 56, 73, 22};
-int valueIntColumn[] = {443, 345, 21, 78};
-float valueFloatLine[] = {1.27, 2.71, 3.14, 9.81};
-float valueFloatColumn[] = {6.62, 1.6, 7.81, 5.68};
-char strLine[] = {'S', 'k', 'i', 'l', 'l'};
-char strColumn[] = {'B', 'o', 'x'};
-
-int countMassiv = 0;
+static int value = 5;
 char controlChar[] = {'Y', 'y'};
 //
 void loadMenu();
 void executorLogic();
 
 /// @brief
-/// @param isTypeVision - true Line, false Column
-/// @param valueInt - int dataMassiv
-/// @param valueFloat - float dataMassiv
+/// @param isTypeVision
+/// @param valueInt
+/// @param sizeValueInt
+/// @param valueFloat
+/// @param sizeValueFloat
 /// @return
-bool consolePrintData1(bool isTypeVision, int valueInt[], float valueFloat[]);
+bool consolePrintData1(bool isTypeVision, int valueInt[], size_t sizeValueInt, float valueFloat[], size_t sizeValueFloat);
+void consolePrintData2();
 //
 int main()
 {
@@ -38,7 +32,8 @@ void loadMenu()
 
     char pressButton;
     bool isStop = true;
-    countMassiv = sizeof(controlChar) / sizeof(controlChar[0]);
+
+    size_t countMassiv = sizeof(controlChar) / sizeof(controlChar[0]);
 
     while (isStop)
     {
@@ -64,55 +59,57 @@ void executorLogic()
     int valueIntLocal[] = {15, 22, 518};
     float valueFloatLocal[] = {1.32, 0.1567, 287.154};
 
-    if (consolePrintData1(false, valueIntLocal, valueFloatLocal))
+    if (consolePrintData1(false, valueIntLocal, sizeof(valueIntLocal) / sizeof(valueIntLocal[0]),
+                          valueFloatLocal, sizeof(valueFloatLocal) / sizeof(valueFloatLocal[0])))
     {
-        printf("consolePrintData1 local data - ok\n");
+        printf("\nconsolePrintData1 local data - ok\n\n");
     }
-    if (consolePrintData1(true, valueIntGlobal, valueFloatGlobal))
+
+    if (consolePrintData1(true, valueIntGlobal, sizeof(valueIntGlobal) / sizeof(valueIntGlobal[0]),
+                          valueFloatGlobal, sizeof(valueFloatGlobal) / sizeof(valueFloatGlobal[0])))
     {
-        printf("consolePrintData1 global data - ok\n");
+        printf("\nconsolePrintData1 global data - ok\n\n");
     }
+
+    int tempValue = value;
+    
+    for (int i = 0; i < tempValue; i++)
+    {
+        consolePrintData2();
+    }
+    printf("\nconsolePrintData2 data - ok\n\n");
 }
-bool consolePrintData1(bool isTypeVision, int valueInt[], float valueFloat[])
+
+bool consolePrintData1(bool isTypeVision, int valueInt[], size_t sizeValueInt, float valueFloat[], size_t sizeValueFloat)
 {
-    if (valueInt != NULL)
+
+    for (int i = 0; i < sizeValueInt; i++)
     {
-        countMassiv=0;
-        printf ("massiv1 =%i\n",countMassiv);
-        int countMassiv = sizeof(valueInt) / sizeof(valueInt[0]);
-        printf ("massiv =%i",countMassiv);
-        for (int i = 0; i < countMassiv; i++)
+        if (isTypeVision)
         {
-            if (isTypeVision)
-            {
-                printf("%i\t", valueInt[i]);
-            } // line
-            else
-            {
-                printf("%i\n", valueInt[i]);
-            } // column
-        }
-        printf("\n");
+            printf("%i\t", valueInt[i]);
+        } // line
+        else
+        {
+            printf("%i\n", valueInt[i]);
+        } // column
     }
 
-    if (valueFloat != NULL)
+    for (int i = 0; i < sizeValueFloat; i++)
     {
-        int countMassiv = sizeof(valueFloat) / sizeof(valueFloat[0]);
-
-        for (int i = 0; i < countMassiv; i++)
+        if (isTypeVision)
         {
-            if (isTypeVision)
-            {
-                printf("%f\t", valueFloat[i]);
-            } // line
-            else
-            {
-                printf("%f\n", valueFloat[i]);
-            } // column
-        }
-
-        printf("\n\n");
+            printf("%f\t", valueFloat[i]);
+        } // line
+        else
+        {
+            printf("%f\n", valueFloat[i]);
+        } // column
     }
-
     return true;
+}
+void consolePrintData2()
+{
+    value++;
+    printf("Static int %i\n", value);
 }
