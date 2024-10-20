@@ -110,6 +110,7 @@ bool consolePrintData1(bool isTypeVision, int valueInt[], size_t sizeValueInt, f
 }
 void consolePrintData2()
 {
-    value++;
+    //old: value++;
     printf("Static int %i\n", value);
+    value++;
 }
